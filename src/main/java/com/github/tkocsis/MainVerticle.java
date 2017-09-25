@@ -14,10 +14,10 @@ public class MainVerticle extends AbstractVerticle {
 	
 	@Override
 	public void start() throws Exception {
-		log.info("Starting app...");
+		log.info("Starting app with config: " + config().encodePrettily());
 		
 		Router router = Router.router(vertx);
-		router.get("/").handler(ctx -> {
+		router.get().handler(ctx -> {
 			ctx.response().end("hello");
 		});
 		vertx.createHttpServer().requestHandler(router::accept)
