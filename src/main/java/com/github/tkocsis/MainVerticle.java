@@ -7,6 +7,8 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -17,9 +19,11 @@ public class MainVerticle extends AbstractVerticle {
 		log.info("Starting app with config: " + config().encodePrettily());
 		
 		Router router = Router.router(vertx);
-		router.get().handler(ctx -> {
+		router.route().handler(BodyHandler.create());
+		router.get("/").handler(ctx -> {
 			ctx.response().end("hello");
 		});
+		router.get("/web").handler(StaticHandler.create("web"));
 		vertx.createHttpServer().requestHandler(router::accept)
 			.listen(Integer.parseInt(config().getString("http_port")));
 		
