@@ -21,7 +21,7 @@ public class MainVerticle extends AbstractVerticle {
 			ctx.response().end("hello");
 		});
 		vertx.createHttpServer().requestHandler(router::accept)
-			.listen(config().getInteger("http_port"));
+			.listen(Integer.parseInt(config().getString("http_port")));
 		
 		log.info("App started");
 	}
@@ -34,6 +34,6 @@ public class MainVerticle extends AbstractVerticle {
 	public static void main(String[] args) {
 		Vertx vertx = Vertx.vertx();
 		vertx.deployVerticle(MainVerticle.class.getName(), new DeploymentOptions().setConfig(new JsonObject()
-				.put("http_port", System.getenv("PORT") != null ? System.getenv("PORT") : 8080)));
+				.put("http_port", System.getenv("PORT") != null ? System.getenv("PORT") : "8080")));
 	}
 }
